@@ -1,8 +1,8 @@
 const inputDays = document.querySelector('.inputDays');
 const daysTa = document.querySelector('.daysTa');
 
-inputDays.value = 4
-daysTa.value = 8
+inputDays.value = 6
+daysTa.value = 12
 
 const inputHours = document.querySelector('.inputHours');
 const hoursTa = document.querySelector('.hoursTa');
