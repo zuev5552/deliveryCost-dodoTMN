@@ -1,0 +1,48 @@
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    width: 600px;
+}
+
+.inputDays {
+    width: 300px;
+}
+
+.inputHours {
+    width: 300px;
+}
+
+.daysTa, .hoursTa {
+    font-weight: 400;
+}
+
+div {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.results {
+    background-color: rgb(241, 234, 234);
+}
+
+.week, .month {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.nightCost {
+    font-weight: 700;
+}
+
+.notes {
+    margin-top: 100px;
+    background-color: rgb(248, 244, 244);
+}
