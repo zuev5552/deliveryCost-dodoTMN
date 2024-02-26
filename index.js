@@ -28,7 +28,7 @@ const nightCost = document.querySelector('.nightCost');
 
 night.addEventListener('input', function (e) {
     if (night.value == "on") {
-        let nightCos = (inputDays.value * 300);
+        let nightCos = (inputDays.value * 1200);
         nightCost.textContent = `${nightCos} рублей в неделю*`
         console.log(nightCos);
     }
