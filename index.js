@@ -1,101 +1,128 @@
-const inputDays = document.querySelector('.inputDays');
-const daysTa = document.querySelector('.daysTa');
+//  Исходные данные для расчета дохода курьера
+let costHours = 0; // Ставка оплаты в час
+let prize = 10; // Ставка за заказ
+let priceOfOrder = 160; // Премия к заказу
+let efficiency = 1.85; // Производительность
+let distance = 8; // Средняя дистанция за один заказ (туда/обратно)
+let priceDistance = 6; // Плата на бензин за каждый киллометр (за пробег)
+let nightPrice = 1200; // Ночная оплата (с 04 до 08) за 4 часа
+let weekInYears = 4.35; // Cреднее количество недель в месяце
+let costFrends = 30000; // Оплата по акции "приведи друга"
 
-inputDays.value = 4
-daysTa.value = 8
+console.log(`Часовая ставка  - ${costHours} руб./в час`);
+console.log(`Ставка за заказ  - ${priceOfOrder} руб./заказ`);
+console.log(`Премия к заказу - ${prize} руб./заказ`);
+console.log(`Производительность - ${efficiency} заказ/час`);
+console.log(`Средняя дистанция (туда/обратно) - ${distance} км.`);
+console.log(`Плата на бензин  - ${priceDistance} руб./км.`);
+console.log(`Ночная оплата (с 04 до 08) - ${nightPrice} руб. (за 4 часа)`);
+console.log(`Среднее количество недель в месяце - ${weekInYears}`);
+console.log(`Оплата по акции "приведи друга - ${costFrends} за каждого друга`);
 
-const inputHours = document.querySelector('.inputHours');
-const hoursTa = document.querySelector('.hoursTa');
+// Формирование данных по расчету ЗП
+const formEl = document.querySelector('.form');
+const resultsEl = document.querySelector('.results');
 
-inputDays.addEventListener('input', function (e) {
-    daysTa.textContent = `${e.target.value} дней в неделю`;
-});
 
-inputHours.addEventListener('input', function (e) {
-    hoursTa.textContent = `${e.target.value} часов в день`;
-});
+formEl.addEventListener('submit', function (e) {
+    e.preventDefault();
+    nightPrice = 1200;
+    costFrends = 30000;
+    const daysWeeksEl = document.querySelectorAll('.daysWeeks');
+    const inputHoursEl = document.querySelector('.inputHours');
 
-const prize = 10
-const priceOfOrder = 160
-const priceOfOrderFull = priceOfOrder + prize
-const efficiency = 1.85
-const distance = 8
-const priceDistance = 6
-const nightPrice = 1200
-const week = document.querySelector('.week');
-const month = document.querySelector('.month');
-let weekOrder = document.querySelector('.weekOrder');
-let weekDistance = document.querySelector('.weekDistance');
-let night = document.querySelector('.night');
-const nightCost = document.querySelector('.nightCost');
 
-night.addEventListener('input', function (e) {
-    if (night.value == "on") {
-        let nightCos = (inputDays.value * nightPrice);
-        nightCost.textContent = `${nightCos} рублей в неделю*`
+    if (resultsEl != "") {
+        resultsEl.innerHTML = "";
     }
+
+    //расчет количества работающих дней в неделю
+    let arrDaysChecked = [];
+    daysWeeksEl.forEach(element => {
+        if (element.checked) {
+            arrDaysChecked[arrDaysChecked.length] = element;
+        }
+    });
+    let daysChecked = arrDaysChecked.length
+    console.log(`Количество выбранных курьером дней: ${daysChecked}`);
+
+    // Расчет количества часов
+    let hoursChecked = inputHoursEl.value;
+    console.log(`Количество выбранных курьером часов: ${hoursChecked}`);
+
+    // Ночные часы
+    let inputnightEl = document.querySelector('.inputnight');
+    inputnightEl.checked ? "" : nightPrice = 0
+    console.log(`Ночные часы ${nightPrice}`);
+
+    // Приведи друга
+    let inputFrends = document.querySelector('.inputFrends');
+    inputFrends.checked ? "" : costFrends = 0
+    console.log(`Приведи друга ${costFrends}`);
+
+    // расчет дистанции пройденной за 1 час
+    let distanceOneHours = efficiency * distance
+
+    // расчет платы за бензин за 1 час
+    let fuelCost = distanceOneHours * priceDistance
+
+    // Расчет одного часа работы
+    let oneHoursCost = costHours + fuelCost + (efficiency * (prize + priceOfOrder))
+
+    // Доход в неделю
+    sumWeekNoMatch = (oneHoursCost * hoursChecked * daysChecked) + nightPrice;
+    let summWeek = Math.round(sumWeekNoMatch)
+    // Доход в месяц
+    incomeMonthNoMatch = (((oneHoursCost * hoursChecked * daysChecked) + nightPrice) * weekInYears) + costFrends
+    incomeMonth = Math.round(incomeMonthNoMatch)
+
+    //Общее количество заказов в месяц
+    let orderMonthNoMath = efficiency * hoursChecked * daysChecked * weekInYears
+    let orderMont = Math.round(orderMonthNoMath)
+
+
+    // Вывод результатов
+    const results__tittle = document.createElement('h2');
+    results__tittle.textContent = "Расчет среднего дохода";
+    resultsEl.append(results__tittle);
+
+    const results__weeks = document.createElement('h4');
+    results__weeks.textContent = `За неделю: ${summWeek} руб.`
+    resultsEl.append(results__weeks);
+
+    const results__month = document.createElement('h3');
+    results__month.textContent = `За месяц: ${incomeMonth} руб.`
+    resultsEl.append(results__month);
+
+
+    // Примечание для курьеров
+    const comments = document.createElement('p');
+    comments.textContent = `Справочная информация для курьера`
+    resultsEl.append(comments);
+
+    const comments__order = document.createElement('p');
+    comments__order.textContent = `Количество отвезенных за месяц заказов: ${orderMont} штук.`
+    resultsEl.append(comments__order);
+
+    const comments__distantion = document.createElement('p');
+    comments__distantion.textContent = `Пройденный киллометраж за месяц: ${orderMont * distance} км.`
+    resultsEl.append(comments__distantion);
+
 });
-console.log(`Ставка за заказ ${priceOfOrder} руб.`);
-console.log(`Премия к заказу ${prize} руб.`);
-console.log(`Производительность ${efficiency} заказ/час`);
-console.log(`Средняя дистанция (туда/обратно) ${distance} км.`);
-console.log(`Плата на бензин (за пробег) ${priceDistance} руб.`);
-console.log(`Ночная оплата (с 04 до 08) ${nightPrice} руб.`);
 
 
-// Расчет по умолчанию (при загрузке)
-let incomeOrder = ((daysTa.value * efficiency) * priceOfOrderFull) * inputDays.value
-    let distanceW = ((daysTa.value * efficiency) * inputDays.value) * distance
-    let distanceWeek = Math.round(distanceW);
-    weekDistance.textContent = distanceWeek
-    let weekOr = (daysTa.value * efficiency * inputDays.value );
-    let weekOrd = Math.round(weekOr);
-    weekOrder.textContent = weekOrd;
-    let distanceCostWeek = (distanceWeek * priceDistance)
-    let incomeWeek = (incomeOrder + distanceCostWeek)
-    let ruWeek = new Intl.NumberFormat("ru").format(incomeWeek);
-    week.textContent = ` ${ruWeek} рублей`
-    incomeMonth = (incomeWeek * 4.35)
-    let ruMonth = new Intl.NumberFormat("ru").format(incomeMonth);
-    month.textContent = `   ${ruMonth} рублей`
-
-inputHours.addEventListener('input', function (e) {
-    let incomeOrder = ((e.target.value * efficiency) * priceOfOrderFull) * inputDays.value
-    let distanceW = ((e.target.value * efficiency) * inputDays.value) * distance
-    let distanceWeek = Math.round(distanceW);
-    weekDistance.textContent = distanceWeek
-    let weekOr = (e.target.value * efficiency * inputDays.value );
-    let weekOrd = Math.round(weekOr);
-    weekOrder.textContent = weekOrd;
-    let distanceCostWeek = (distanceWeek * priceDistance)
-    let incomeWeek = (incomeOrder + distanceCostWeek)
-    let ruWeek = new Intl.NumberFormat("ru").format(incomeWeek);
-    week.textContent = ` ${ruWeek} рублей`
-    incomeMonth = (incomeWeek * 4.35)
-    let ruMonth = new Intl.NumberFormat("ru").format(incomeMonth);
-    month.textContent = `   ${ruMonth} рублей`
+// Дизайн всплывающих подсказок (дизайн можно поменять но сам текст нужно оставить)
+tippy('.inputHours', {
+    content: 'Один слот в день может быть от 2 до 14 часов',
+    theme: "New style",
 });
 
-inputDays.addEventListener('input', function (e) {
-    incomeOrder = ((e.target.value * efficiency) * priceOfOrderFull) * inputHours.value
-    let distanceW = ((e.target.value * efficiency) * inputHours.value) * distance    
-    let distanceWeek = Math.round(distanceW);
-    weekDistance.textContent = distanceWeek
-    let weekOr = ((e.target.value * efficiency) * inputHours.value);
-    let weekOrd = Math.round(weekOr);
-    weekOrder.textContent = weekOrd;
-    let distanceCostWeek = (distanceWeek * priceDistance)
-    let incomeWeek = (incomeOrder + distanceCostWeek)
-    let ruWeek = new Intl.NumberFormat("ru").format(incomeWeek);
-    week.textContent = ` ${ruWeek} рублей`
-    incomeMonth = (incomeWeek * 4.35)
-    let ruMonth = new Intl.NumberFormat("ru").format(incomeMonth);
-    month.textContent = `   ${ruMonth} рублей`
+tippy('.night__form', {
+    content: 'Оказание услуг в ночную смену возможно только в пиццерии по адресу: ул. 50 лет октября, 39А.',
+    theme: "New style",
 });
 
-
-
-
-
-
-
+tippy('.frends__form', {
+    content: 'Бонус выплачивается в случае если друг работает как курьером так и на кухне. Максимальный бонус за друга-курьера составляет 30 тыс. руб. а за друга на кухне 10 тыс. руб.',
+    theme: "New style",
+}); 
