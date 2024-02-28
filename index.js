@@ -5,7 +5,7 @@ let priceOfOrder = 160; // Премия к заказу
 let efficiency = 1.85; // Производительность
 let distance = 8; // Средняя дистанция за один заказ (туда/обратно)
 let priceDistance = 6; // Плата на бензин за каждый киллометр (за пробег)
-let nightPrice = 1200; // Ночная оплата (с 04 до 08) за 4 часа
+let nightPrice = 300; // Ночная оплата (с 04 до 08) за каждый час
 let weekInYears = 4.35; // Cреднее количество недель в месяце
 let costFrends = 30000; // Оплата по акции "приведи друга"
 
@@ -26,8 +26,8 @@ const resultsEl = document.querySelector('.results');
 
 formEl.addEventListener('submit', function (e) {
     e.preventDefault();
-    nightPrice = 1200;
     costFrends = 30000;
+    nightPrice = 300;
     const daysWeeksEl = document.querySelectorAll('.daysWeeks');
     const inputHoursEl = document.querySelector('.inputHours');
 
@@ -53,7 +53,13 @@ formEl.addEventListener('submit', function (e) {
     // Ночные часы
     let inputnightEl = document.querySelector('.inputnight');
     inputnightEl.checked ? "" : nightPrice = 0
-    console.log(`Ночные часы ${nightPrice}`);
+    nightCost = nightPrice * hoursChecked;
+    if (nightCost >=1200) {
+        nightCost=1200
+    }
+    console.log(nightCost);
+
+    console.log(`Ночные часы ${nightCost}`);
 
     // Приведи друга
     let inputFrends = document.querySelector('.inputFrends');
@@ -70,10 +76,10 @@ formEl.addEventListener('submit', function (e) {
     let oneHoursCost = costHours + fuelCost + (efficiency * (prize + priceOfOrder))
 
     // Доход в неделю
-    sumWeekNoMatch = (oneHoursCost * hoursChecked * daysChecked) + nightPrice;
+    sumWeekNoMatch = (oneHoursCost * hoursChecked * daysChecked) + (nightCost*daysChecked);
     let summWeek = Math.round(sumWeekNoMatch)
     // Доход в месяц
-    incomeMonthNoMatch = (((oneHoursCost * hoursChecked * daysChecked) + nightPrice) * weekInYears) + costFrends
+    incomeMonthNoMatch = (((oneHoursCost * hoursChecked * daysChecked) + (nightCost*daysChecked)) * weekInYears) + costFrends
     incomeMonth = Math.round(incomeMonthNoMatch)
 
     //Общее количество заказов в месяц
@@ -118,7 +124,7 @@ tippy('.inputHours', {
 });
 
 tippy('.night__form', {
-    content: 'Оказание услуг в ночную смену возможно только в пиццерии по адресу: ул. 50 лет октября, 39А.',
+    content: 'Ночные часы оплачиваются с 04:00 до 08:00 и по адресу пиццерии по адресу: ул. 50 лет октября, 39А.',
     theme: "New style",
 });
 
