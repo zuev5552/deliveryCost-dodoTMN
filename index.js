@@ -23,14 +23,12 @@ console.log(`Оплата по акции "приведи друга - ${costFre
 const formEl = document.querySelector('.form');
 const resultsEl = document.querySelector('.results');
 
-
 formEl.addEventListener('submit', function (e) {
     e.preventDefault();
     costFrends = 30000;
     nightPrice = 300;
     const daysWeeksEl = document.querySelectorAll('.daysWeeks');
     const inputHoursEl = document.querySelector('.inputHours');
-
 
     if (resultsEl != "") {
         resultsEl.innerHTML = "";
@@ -44,22 +42,21 @@ formEl.addEventListener('submit', function (e) {
         }
     });
     let daysChecked = arrDaysChecked.length
-    console.log(`Количество выбранных курьером дней: ${daysChecked}`);
+    console.log(`Количество выбранных курьером дней в неделю: ${daysChecked}`);
 
     // Расчет количества часов
     let hoursChecked = inputHoursEl.value;
-    console.log(`Количество выбранных курьером часов: ${hoursChecked}`);
+    console.log(`Количество выбранных курьером часов в день: ${hoursChecked}`);
 
     // Ночные часы
     let inputnightEl = document.querySelector('.inputnight');
     inputnightEl.checked ? "" : nightPrice = 0
     nightCost = nightPrice * hoursChecked;
-    if (nightCost >=1200) {
-        nightCost=1200
+    // За смену максимум 4 часа и соответственно максимум 1200 доплаты за ночь
+    if (nightCost >= 1200) {
+        nightCost = 1200;
     }
-    console.log(nightCost);
-
-    console.log(`Ночные часы ${nightCost}`);
+    console.log(`Оплата ночных часов за (сумма за одну смену) ${nightCost} руб.`);
 
     // Приведи друга
     let inputFrends = document.querySelector('.inputFrends');
@@ -67,29 +64,29 @@ formEl.addEventListener('submit', function (e) {
     console.log(`Приведи друга ${costFrends}`);
 
     // расчет дистанции пройденной за 1 час
-    let distanceOneHours = efficiency * distance
+    let distanceOneHours = efficiency * distance;
 
     // расчет платы за бензин за 1 час
-    let fuelCost = distanceOneHours * priceDistance
+    let fuelCost = distanceOneHours * priceDistance;
 
     // Расчет одного часа работы
-    let oneHoursCost = costHours + fuelCost + (efficiency * (prize + priceOfOrder))
+    let oneHoursCost = costHours + fuelCost + (efficiency * (prize + priceOfOrder));
 
     // Доход в неделю
-    sumWeekNoMatch = (oneHoursCost * hoursChecked * daysChecked) + (nightCost*daysChecked);
-    let summWeek = Math.round(sumWeekNoMatch)
+    let sumWeekNoMatch = (oneHoursCost * hoursChecked * daysChecked) + (nightCost * daysChecked);
+    let summWeek = Math.round(sumWeekNoMatch);
     // Доход в месяц
-    incomeMonthNoMatch = (((oneHoursCost * hoursChecked * daysChecked) + (nightCost*daysChecked)) * weekInYears) + costFrends
-    incomeMonth = Math.round(incomeMonthNoMatch)
+    let incomeMonthNoMatch = (((oneHoursCost * hoursChecked * daysChecked) + (nightCost * daysChecked)) * weekInYears) + costFrends;
+    let incomeMonth = Math.round(incomeMonthNoMatch);
 
     //Общее количество заказов в месяц
-    let orderMonthNoMath = efficiency * hoursChecked * daysChecked * weekInYears
-    let orderMont = Math.round(orderMonthNoMath)
-
+    let orderMonthNoMath = efficiency * hoursChecked * daysChecked * weekInYears;
+    let orderMont = Math.round(orderMonthNoMath);
 
     // Вывод результатов
     const results__tittle = document.createElement('h2');
     results__tittle.textContent = "Расчет среднего дохода";
+    results__tittle.classList.add("results__tittle");
     resultsEl.append(results__tittle);
 
     const results__weeks = document.createElement('h4');
@@ -97,27 +94,39 @@ formEl.addEventListener('submit', function (e) {
     resultsEl.append(results__weeks);
 
     const results__month = document.createElement('h3');
-    results__month.textContent = `За месяц: ${incomeMonth} руб.`
+    results__month.textContent = `За месяц: ${incomeMonth} руб.`;
     resultsEl.append(results__month);
-
 
     // Примечание для курьеров
     const comments = document.createElement('p');
-    comments.textContent = `Справочная информация для курьера`
+    comments.textContent = `Справочная информация для курьера`;
+    comments.classList.add("comments");
     resultsEl.append(comments);
-
+""
     const comments__order = document.createElement('p');
-    comments__order.textContent = `Количество отвезенных за месяц заказов: ${orderMont} штук.`
+    comments__order.textContent = `Количество отвезенных за месяц заказов: ${orderMont} штук.`;
     resultsEl.append(comments__order);
 
     const comments__distantion = document.createElement('p');
-    comments__distantion.textContent = `Пройденный киллометраж за месяц: ${orderMont * distance} км.`
+    comments__distantion.textContent = `Пройденный киллометраж за месяц: ${orderMont * distance} км.`;
     resultsEl.append(comments__distantion);
+
+    // Хочу стать курьером
+    const transitionEl = document.querySelector('.transition');
+    
+    const buttonApproval = document.createElement('button');
+    buttonApproval.classList.add ("buttonApproval")
+    buttonApproval.textContent = `Хочу стать курьером!!!`;
+    transitionEl.append(buttonApproval);
+
+    const buttonCancel = document.createElement('button');
+    buttonCancel.classList.add ("buttonCancel")
+    buttonCancel.textContent = `Мне это неинтересно`;
+    transitionEl.append(buttonCancel);
 
 });
 
-
-// Дизайн всплывающих подсказок (дизайн можно поменять но сам текст нужно оставить)
+// Всплывающие подсказки (дизайн можно поменять, но сам текст нужно оставить)
 tippy('.inputHours', {
     content: 'Один слот в день может быть от 2 до 14 часов',
     theme: "New style",
@@ -125,10 +134,15 @@ tippy('.inputHours', {
 
 tippy('.night__form', {
     content: 'Ночные часы оплачиваются с 04:00 до 08:00 и в пиццерии по адресу: ул. 50 лет октября, 39А.',
-    theme: "New style",
+    theme: "New-style",
 });
 
 tippy('.frends__form', {
     content: 'Бонус выплачивается за друга-курьера, так и за друга-пиццамейкера. Максимальный бонус за друга-курьера составляет 30 тыс. руб. а за друга-пиццамейкера -  10 тыс. руб.',
-    theme: "New style",
+    theme: "New-style",
+});
+
+tippy('.results', {
+    content: 'Это примерный доход курьеров. Реальный доход может быть выше — так как есть доплаты в дни повышенного спроса,  оплата за бронь смены в праздничные дни и пр.',
+    theme: "New-style",
 }); 
