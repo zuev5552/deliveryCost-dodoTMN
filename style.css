@@ -1,10 +1,5 @@
-body {
-    font-size: 16px;
-}
-
-.tippy-box[data-theme~='New style'] {
-    background-color: tomato;
-    color: yellow;
+.tippy-box[data-theme~='New-style'] {
+    width: 300px;
   }
 
 .box {
@@ -20,10 +15,6 @@ p {
 .daysWeeks {
     margin-right: 15px;
     font-weight: 600;
-}
-
-.inputHours {
-    width: 50px;
 }
 
 .frends__form, .night__form {
@@ -42,7 +33,23 @@ p {
 
 .submit__form {
     margin: 20px;
-    background-color: rgb(126, 180, 250);
+    background-color: rgb(167, 199, 240);
     font-weight: 600;
     font-size: 20px;
+}
+
+.buttonApproval {
+    margin: 20px;
+    background-color: rgb(194, 250, 242);
+    font-weight: 600;
+    font-size: 20px;
+    margin-left: 0;
+}
+
+.buttonCancel {
+    margin: 20px;
+    background-color: rgb(255, 245, 210);
+    font-weight: 600;
+    font-size: 20px;
+    margin-left: 40px;
 }
