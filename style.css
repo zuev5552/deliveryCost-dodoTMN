@@ -53,3 +53,11 @@ p {
     font-size: 20px;
     margin-left: 40px;
 }
+
+.commentsDiv {
+    margin-left: 300px;
+}
+
+.buttonFeedback {
+    display: block;
+}
