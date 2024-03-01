@@ -61,3 +61,7 @@ p {
 .buttonFeedback {
     display: block;
 }
+
+.commentInput {
+    width: 250px;
+}
