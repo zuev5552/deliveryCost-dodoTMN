@@ -132,11 +132,12 @@ formEl.addEventListener('submit', function (e) {
         commentsEl.append (formFeedbackEl);
 
 
-        const commentInput = document.createElement("textarea");
+       const commentInput = document.createElement("textarea");
+        commentInput.classList.add ("commentInput")
         commentInput.setAttribute ("type", "text")
         commentInput.setAttribute ("placeholder", "Расскажите в двух словах почему Вам неинтересны наши условия")
-        commentInput.setAttribute ("width", "200px");
         formFeedbackEl.append (commentInput);
+
 
         const buttonFeedback = document.createElement("button");
         buttonFeedback.textContent = "Рассказать";
