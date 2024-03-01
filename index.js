@@ -2,7 +2,7 @@
 let costHours = 0; // Ставка оплаты в час
 let prize = 10; // Ставка за заказ
 let priceOfOrder = 160; // Премия к заказу
-let efficiency = 1.8; // Производительность
+let efficiency = 1.85; // Производительность
 let distance = 6.5; // Средняя дистанция за один заказ (туда/обратно)
 let priceDistance = 6; // Плата на бензин за каждый киллометр (за пробег)
 let nightPrice = 300; // Ночная оплата (с 04 до 08) за каждый час
@@ -123,6 +123,27 @@ formEl.addEventListener('submit', function (e) {
     buttonCancel.classList.add ("buttonCancel")
     buttonCancel.textContent = `Мне это неинтересно`;
     transitionEl.append(buttonCancel);
+
+    buttonCancel.addEventListener('click', function () {
+        const commentsEl = document.querySelector('.commentsDiv');
+
+        const formFeedbackEl = document.createElement("form");
+        formFeedbackEl.classList.add ("fomr__feedback");
+        commentsEl.append (formFeedbackEl);
+
+
+        const commentInput = document.createElement("textarea");
+        commentInput.setAttribute ("type", "text")
+        commentInput.setAttribute ("placeholder", "Расскажите в двух словах почему Вам неинтересны наши условия")
+        commentInput.setAttribute ("width", "200px");
+        formFeedbackEl.append (commentInput);
+
+        const buttonFeedback = document.createElement("button");
+        buttonFeedback.textContent = "Рассказать";
+        buttonFeedback.classList.add ("buttonFeedback");
+        buttonFeedback.setAttribute ("type", "submit");
+        formFeedbackEl.append (buttonFeedback);
+    });
 
 });
 
